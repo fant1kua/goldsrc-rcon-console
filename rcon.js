@@ -23,12 +23,6 @@ class RCON extends EventEmitter {
 	    };
         return new Promise((resolve, reject) => {
             this.connection = dgram.createSocket('udp4');
-
-            this.connection.once('listening', () => {
-                this.connection.removeAllListeners('listening');
-                this.connected = true;
-            });
-
 	        resolve(this.connection);
         });
     }
@@ -41,17 +35,26 @@ class RCON extends EventEmitter {
 		this.password = password;
 
 		return new Promise((resolve, reject) => {
+			const timer = setTimeout(() => {
+				reject(new Error('Timeout'));
+			}, 3000);
+
+			this.connection.once('error', (error) => {
+				clearTimeout(timer);
+				reject(error);
+			});
+
 			this.connection.once('message', (buffer) => {
+				clearTimeout(timer);
 				this.connection.removeAllListeners('message');
+				this.connection.removeListener('error', reject);
 				this.challenge = Buffer.concat([
 					Buffer.from([0xFF, 0xFF, 0xFF, 0xFF, 0x72, 0x63, 0x6f, 0x6e, 0x20]),
 					buffer.slice(19, -2),
 					Buffer.from(` ${this.password} `)
 				]);
+				this.connected = true;
 
-				this.connection.on('message', (buffer) => {
-					this.emit('message', buffer.slice(4).toString('utf-8'));
-				});
 				resolve();
 			});
 
