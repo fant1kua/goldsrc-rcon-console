@@ -15,23 +15,26 @@ const init = (host, port, password) => {
 	rcon
 		.connect(host, port)
 		.then((socket) => {
-			if (checkLocalhost(rcon.remote.host)) {
-				return new Promise((resolve, reject) => {
-					const listening = () => {
-						socket.removeListener('listening', listening);
-						resolve({
-							address: rcon.remote.host,
-							port: socket.address().port
+			return checkLocalhost(rcon.remote.host)
+				.then(status => {
+					if (status) {
+						return new Promise((resolve, reject) => {
+							const listening = () => {
+								socket.removeListener('listening', listening);
+								resolve({
+									address: rcon.remote.host,
+									port: socket.address().port
+								})
+							};
+							socket.on('listening', listening);
+							socket.bind({
+								address: rcon.remote.host
+							});
 						})
-					};
-					socket.on('listening', listening);
-					socket.bind({
-						address: rcon.remote.host
-					});
-				})
-
-			}
-			return STUN(socket);
+					} else {
+						return STUN(socket);
+					}
+				});
 		})
 		.then((address) => rcon.auth(address.address, address.port, password))
 		.then(() => rcon.execute(`logaddress_del ${rcon.local.host} ${rcon.local.port}`))
@@ -94,11 +97,7 @@ const init = (host, port, password) => {
 	});
 };
 
-
 program
-	// .option('-h, --host <host>', 'Server host', '127.0.0.1')
-	// .option('-p, --port <port>', 'Server port', 27015)
-	// .option('-a, --password <password>', 'RCON password')
 	.arguments('<host> <port> <password>')
 	.action(function (host, port, password) {
 		if (!host || !port || !password) {
