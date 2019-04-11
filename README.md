@@ -1,0 +1,1 @@
+```pkg -t node10-linux -o rcon-console main.js```
