@@ -4,6 +4,7 @@
   "main": "main.js",
   "license": "MIT",
   "scripts": {
+    "preinstall": "yarn global add pkg",
     "build:linux": "pkg -t node10-linux -o dist/rcon-console main.js",
     "build:win": "pkg -t node10-win -o dist/rcon-console main.js",
     "build:osx": "pkg -t node10-macos -o dist/rcon-console main.js"
