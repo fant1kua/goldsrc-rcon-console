@@ -1,8 +1,13 @@
 {
-  "name": "rcon",
+  "name": "rcon-console",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "license": "MIT",
+  "scripts": {
+    "build:linux": "pkg -t node10-linux -o dist/rcon-console main.js",
+    "build:win": "pkg -t node10-win -o dist/rcon-console main.js",
+    "build:osx": "pkg -t node10-macos -o dist/rcon-console main.js"
+  },
   "dependencies": {
     "chalk": "^2.4.2",
     "check-localhost": "^0.0.1",
