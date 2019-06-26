@@ -7,4 +7,14 @@ cache:
   yarn: true
   directories:
     - /home/travis/pkg
+deploy:
+  provider: releases
+  api_key: "$GH_TOKEN"
+  file:
+    - "dist/goldsrc-rcon-console-linux"
+    - "dist/goldsrc-rcon-console-windows.exe"
+    - "dist/goldsrc-rcon-console-osx"
+  skip_cleanup: true
+  on:
+    tags: true
 script: yarn build
