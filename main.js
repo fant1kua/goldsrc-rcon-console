@@ -3,9 +3,10 @@ const chalk = require('chalk');
 const program = require('commander');
 const spinner = require('ora')();
 const checkLocalhost = require('check-localhost');
+const menu = require('appendable-cli-menu')
 
-const RCON = require('./rcon');
-const STUN = require('./stun');
+const RCON = require('./src/rcon');
+const STUN = require('./src/stun');
 
 const REGEX_LOG = /^log\sL\s(\d{2}\/\d{2}\/\d{4}\s-\s\d{2}:\d{2}:\d{2}):\s(.+)/;
 const REGEX_RCON = /^Rcon:\s/;
@@ -126,10 +127,41 @@ const init = (host, port, password) => {
 program
 	.arguments('<host> <port> <password>')
 	.action(function (host, port, password) {
-		if (!host || !port || !password) {
-			program.outputHelp(chalk.green);
+		if (host && port && password) {
+            console.log('test3');
+            init(host, parseInt(port, 10), password);
+            // todo save
 		} else {
-			init(host, parseInt(port, 10), password);
+			console.log('test');
+            const servers = menu('Select server', function (option) {
+                console.log('test2');
+                init(option.value.host, option.value.port, option.value.password);
+            })
+
+            servers.add({
+                name: '127.0.0.1:27015',
+                value: {
+                    host: '127.0.0.1',
+                    port: 27015,
+                    password: '123'
+                }
+            });
+            servers.add({
+                name: '127.0.0.1:27016',
+                value: {
+                    host: '127.0.0.1',
+                    port: 27016,
+                    password: '123'
+                }
+            });
+            servers.add({
+                name: '127.0.0.1:27017',
+                value: {
+                    host: '127.0.0.1',
+                    port: 27017,
+                    password: '123'
+                }
+            });
 		}
 	});
 
