@@ -10,12 +10,13 @@ cache:
 deploy:
   provider: releases
   api_key: "$GH_TOKEN"
+  name: "1.${TRAVIS_BUILD_NUMBER}.${TRAVIS_BUILD_ID}"
   file:
     - "dist/goldsrc-rcon-console-linux"
     - "dist/goldsrc-rcon-console-windows.exe"
     - "dist/goldsrc-rcon-console-osx"
   skip_cleanup: true
   on:
-    branch: travis
+    branch: master
     tags: true
 script: yarn build
