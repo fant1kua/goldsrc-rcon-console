@@ -16,5 +16,6 @@ deploy:
     - "dist/goldsrc-rcon-console-osx"
   skip_cleanup: true
   on:
+    branch: travis
     tags: true
 script: yarn build
