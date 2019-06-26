@@ -1,4 +1,10 @@
 language: node_js
 node_js:
   - "10"
+env:
+  - PKG_CACHE_PATH=/home/travis/pkg
+cache:
+  yarn: true
+  directories:
+    - /home/travis/pkg
 script: yarn build
