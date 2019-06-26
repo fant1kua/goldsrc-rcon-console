@@ -1,4 +1,6 @@
 # Goldsrc RCON Console
+[![Build Status](https://travis-ci.org/fant1kua/goldsrc-rcon-console.svg?branch=master)](https://travis-ci.org/fant1kua/goldsrc-rcon-console)
+![GitHub issues](https://img.shields.io/github/issues/fant1kua/goldsrc-rcon-console.svg)
 
 ## Require
 - Node JS 10.x or higher
