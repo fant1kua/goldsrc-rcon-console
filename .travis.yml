@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - "10"
+env:
+  - PKG_CACHE_PATH=/home/travis/pkg
+cache:
+  yarn: true
+  directories:
+    - /home/travis/pkg
+deploy:
+  provider: releases
+  api_key: "$GH_TOKEN"
+  file:
+    - "dist/goldsrc-rcon-console-linux"
+    - "dist/goldsrc-rcon-console-windows.exe"
+    - "dist/goldsrc-rcon-console-osx"
+  skip_cleanup: true
+  on:
+    branch: travis
+    tags: true
+script: yarn build
